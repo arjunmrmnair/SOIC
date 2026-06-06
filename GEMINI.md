@@ -1,60 +1,62 @@
 # Investment Brain — GEMINI Project Context
 
-## Project Overview
-This repository is a structured, comprehensive investment knowledge base extracted from 73 **SOIC (School of Intrinsic Compounding)** webinar PDFs. It serves as a master reference for Indian equity investing, covering financial statement analysis, valuation frameworks, moat identification, and deep-dives into 15+ industrial sectors.
 
-**Purpose:** To provide a centralized, searchable repository of high-signal investment frameworks and sector-specific metrics to assist in fundamental research and decision-making.
+## What This Repository Is
 
-**Key Themes:**
-- **Fundamental Analysis:** Rigorous P&L, Balance Sheet, and Cash Flow frameworks.
-- **Valuation:** 14+ metrics mapped to 25+ specific sectors.
-- **Moats:** Distinguishing between Legacy and Reinvestment moats with real-world Indian examples.
-- **Sector Specialization:** Deep technical and economic analysis of Chemicals, Pharma, Defense, Industrials, and more.
-- **Decision Science:** Probabilistic frameworks for buying and selling (Stan Weinstein Stage Analysis, CANSLIM).
+A structured investment knowledge base extracted from 73 SOIC (School of Intrinsic Compounding) webinar PDFs. It contains frameworks, metrics, checklists, and sector analysis for Indian equity investing. There is no code — all content is in markdown files.
 
----
+## Navigation
 
-## Directory Structure & Key Files
+Always start with `00_INDEX.md`. It contains:
+- A quick-lookup table mapping topics to file numbers
+- Section-by-section summaries of what each file covers
+- A valuation-by-sector reference table
+- Universal red flags and key thresholds
 
-### 1. The Foundation (Files 00-02)
-- **`00_INDEX.md`**: **The Entry Point.** Contains the Master Index, Quick Navigation table, and sector-specific valuation/threshold reference tables. Always consult this first.
-- **`01_financial_statements.md`**: Core analysis of P&L, BS, and CF. Includes ROCE vs. ROE deep dives and CFO/PAT quality checks.
-- **`02_ratios_and_annual_report.md`**: Comprehensive ratio formulas, industry-specific norms, and the SOIC framework for reading Annual Reports.
+## File Architecture
 
-### 2. Strategy & Frameworks (Files 03-07)
-- **`03_valuation.md`**: Master repository of all 14 valuation metrics. Includes sector-specific KPIs and the "Zone of Danger" (Peak PE + Peak Margins).
-- **`04_sell_and_decisions.md`**: Stan Weinstein Stage Analysis, 30WMA indicators, and 12 Probabilistic Maxims for selling.
-- **`05_moats.md`**: Reinvestment vs. Legacy moats, Capital Allocation frameworks, and a 40-company master moat table.
-- **`06_when_to_buy.md`**: Buy frameworks including Bombed-out IPOs, Inflections, Speed Breakers, and CANSLIM.
-- **`07_checklists_forensics_tools.md`**: VERBATIM 16-step SOIC investing checklist, forensic red flags table, and research process.
+Files are numbered by topic domain, not dependency order:
 
-### 3. Sector Deep Dives (Files 08-14)
-- **`08_banking_nbfc_insurance.md`**: NIM, GNPA, PCR thresholds, and insurance "Brahmastra" (Combined Ratio).
-- **`09_capital_value_chains_platform.md`**: Value chain mapping for 15+ sectors and platform business unit economics.
-- **`10_chemicals_pharma.md`**: Massive deep dive (3000+ lines) on Specialty Chemicals, API, CDMO, and Agrochemicals.
-- **`11_healthcare_biotech.md`**: Hospital metrics (ARPOB, Occupancy, ALOS) and Biotech/Aroma Chemicals.
-- **`12_energy_resources.md`**: Oil & Gas (Upstream/Downstream), Metals value chain, and Rare Earths.
-- **`13_industrials_defense.md`**: Another massive file (3000+ lines) covering Steel Pipes, Shipping, Ports, PEB, Defense, and Nuclear.
-- **`14_consumer_saas.md`**: Real Estate (NAV/Pre-sales), LGD (Lab Grown Diamonds), Alcohol, and SaaS metrics (NRR, LTV/CAC). Includes the **Sector Rotation** master framework.
+| Range | Domain |
+|-------|--------|
+| `01–02` | Financial statement analysis and ratios |
+| `03` | Valuation frameworks |
+| `04` | Sell decisions and probabilistic thinking |
+| `05` | Moats and competitive advantage |
+| `06` | Buy frameworks and entry timing |
+| `07` | Investing checklist, forensics, research tools |
+| `08` | Banking, NBFCs, Insurance |
+| `09` | Capital allocation and value chain analysis |
+| `10` | Chemicals, pharma, agrochemicals, CDMO |
+| `11` | Healthcare, biotech, hospitals |
+| `12` | Energy, oil & gas, metals, mining |
+| `13` | Industrials, defense, shipping, aerospace, next-leg framework |
+| `14` | Consumer sectors, SaaS, sector rotation |
 
----
+## Answering Investment Questions
 
-## Usage Instructions for AI Agents
+When asked about a specific company, sector, or concept:
+1. Check `00_INDEX.md` quick navigation table first
+2. Go to the relevant numbered file
+3. The large files (`05`, `10`, `13`, `14`) contain multiple merged sub-topics — use markdown headings to navigate within them
 
-### 1. Navigating Information
-- **Search First:** Use `grep_search` to find specific companies or metrics across the repository. Many companies are used as case studies across multiple files.
-- **Index Reference:** For general sector queries, check `00_INDEX.md` to identify the correct file and then use `read_file` with targeted `start_line` and `end_line` parameters.
-- **Cross-Reference:** Always combine sector-specific insights (e.g., from `10_chemicals_pharma.md`) with the universal checklists in `07_checklists_forensics_tools.md`.
+For cross-cutting questions (e.g. "how to evaluate management quality"), check `07_checklists_forensics_tools.md` — it has the master checklist and red flags that apply across all sectors.
 
-### 2. Answering Investment Inquiries
-- **Quantitative Rules:** When asked if a stock is "good," refer to the "Key Thresholds" table in `00_INDEX.md` (e.g., ROCE > 15-20%, GNPA < 2%).
-- **Qualitative Rules:** Use the "Moat Sources" sections in `05_moats.md` and sector files to identify competitive advantages.
-- **Decision Support:** If asked about buying/selling, reference the Stage Analysis in `04_sell_and_decisions.md` or the Inflection patterns in `06_when_to_buy.md`.
+## Updating Content
 
-### 3. Maintenance Guidelines
-- **Consistency:** Maintain the heading hierarchy (`##`, `###`) and table formatting when adding new research.
-- **Index Updates:** If a new file or major section is added, update the `00_INDEX.md` Quick Navigation table and summary sections.
-- **Case Studies:** When adding notes on a specific company, check if it already exists in the repository and link/reference previous mentions to build a historical narrative.
+When adding new content to an existing file, follow the existing heading hierarchy and bullet-point style — the files use a consistent pattern of `##` for major topics, `###` for sub-topics, and tables/bullets for data. After editing any file, update the relevant summary in `00_INDEX.md` to reflect the change.
+
+When adding a new sector or topic that doesn't fit existing files, create a new numbered file following the range conventions above, and add it to the Quick Navigation table and a new section in `00_INDEX.md`.
+
+## Key Content Locations
+
+- **SOIC 16-step investing checklist**: `07_checklists_forensics_tools.md`
+- **Sector-specific valuation metrics**: `00_INDEX.md` → "Valuation by Sector" table, and `03_valuation.md`
+- **Good business thresholds** (ROCE, GNPA, NIM, etc.): `00_INDEX.md` → "Key Thresholds" table
+- **Universal red flags**: `00_INDEX.md` → "Red Flags" table, and `07_checklists_forensics_tools.md`
+- **Company examples**: scattered throughout sector files; `05_moats.md` has the largest company reference table (40 companies with moat type)
+- **When to sell**: `04_sell_and_decisions.md` — Stage Analysis framework + 12 probabilistic maxims
+- **SOIC 5-Bucket Framework**: `10_chemicals_pharma.md` (applies across sectors)
 
 ------------------------------------------------------------------------------------
 
@@ -82,13 +84,16 @@ This repository is a structured, comprehensive investment knowledge base extract
 - **Portfolio & Holding Mandate:**
 	1 **Exit/Trim Alerts:** If asked about "bad news" or "reducing/exiting," the agent MUST perform a comprehensive news audit across all current holdings and the Forever List. Suggest "Exit" for structural failure (Fraud/Margin Collapse) or "Trim" for valuation extremes.
 - **Forward PE, PAT & EPS Guidance Mandate (v3.3):** For every stock, MUST perform a multi-tier verification before recommending, specifically targeting a 20-25%+ CAGR for the next 3 years.
-    0. **Fundamental DNA & Background Audit (MANDATORY START):** Before any financial comparison, you MUST: 1. State the **Market Cap**. 2. Provide a comprehensive **Summary of the company**. 3. Conduct **Complete Research** on its competitive positioning (Moat, Market Leadership, Quality of Clients, etc.). 4. Summarize the **Latest News** and key discussions from the **Past 3 Concalls** with **direct verification links** provided. 5. Explicitly state the **Future Order Book** status. This section is non-negotiable for establishing qualitative context.
+    0. **Fundamental DNA & Background Audit (MANDATORY START):** Before any financial comparison, you MUST: 1. State the **Market Cap**. 2. Provide a comprehensive **Summary of the company**. 3. Conduct **Complete Research** on its competitive positioning (Moat, Market Leadership, Quality of Clients,competitors, etc.). 4. Summarize the **Latest News** and key discussions from the **Past 3 Concalls** with **direct verification links** provided. 5. Explicitly state the **Future Order Book** status. This section is non-negotiable for establishing qualitative context.
     1. **Promise vs. Delivery Check:** Verify the current year's actual PAT against the guidance/target provided by management in the *previous* year. Use Screener.in (Documents/Concalls) to confirm if they delivered what they promised. Mention this verification explicitly in every response.
-    2. **EPS Growth Quote Extraction (MANDATORY):** You MUST extract and quote the EPS/Profit growth rate mentioned in *last year's* concall AND compare it with the exact quote from the *latest/current* concall. This proves trajectory acceleration or deceleration. Include these specific quotes in every response.
+    2. **EPS Growth Quote Extraction (MANDATORY):** You MUST extract and quote the EPS/Profit growth rate/ PAT Growth mentioned in *last year's* concall AND compare it with the exact quote from the *latest/current* concall. This proves trajectory acceleration or deceleration. Include these specific quotes in every response.
     3. **Guidance Extraction & Exact Quote (MANDATORY):** Reference latest concalls for *next* year's guidance. The guidance MUST be clearly mentioned by the management. You MUST extract and provide the EXACT quote/statement from the management regarding this guidance in your response without fail. If only Revenue/Top-line growth % is given, derive Suggested PAT by applying historical/guided PAT margins.
     4. **The 3-Year 25% CAGR Check (MANDATORY):** Explicitly state whether the stock can mathematically deliver a **20% to 25%+ CAGR over the next 3 years** based on the extracted management guidance and current valuation. If it cannot, flag it.
     5. **The Ultimate Valuation & Upside Matrix (MANDATORY):** You MUST calculate and display the following metrics for every stock without fail:
-        - **Forward PE (Current Valuation):** `Current Market Cap / Suggested PAT`. (This tells us how cheap the stock is today based on next year's earnings).
+        - **Priority Logic:** You MUST use **Management Guidance** as the growth factor. If (and only if) guidance is absent, use the 3-Year Profit CAGR as a conservative proxy.
+        - Current PE 
+        - Current PEG
+        - **Forward PE (Next Year Valuation):** `Current Market Cap / Suggested PAT`. (This tells us how cheap the stock is today based on next year's earnings).
         - **Target PE (Expected Exit Multiple):** The P/E multiple the stock *should* trade at based on its growth (usually the 5Y/10Y Median PE or Industry PE).
         - **Forward Market Cap (Future Value):** `Suggested PAT * Target PE`.
         - **Upside Potential (X-Times Multiplier):** `Forward Market Cap / Current Market Cap`. (1.0x = No growth, 1.5x = 50% gain, 2.0x = Double your money).
@@ -105,7 +110,7 @@ This repository is a structured, comprehensive investment knowledge base extract
 - **Continuous Improvement:** Identify gaps and update criteria files when improvements are found.
 - **Tool Usage:** Use tools to access screener.com, parse content, and cross-reference data. Update criteria when required.
 
-## Yolo Mode (DEFAULT)
+## Mode
 - **Pragmatic Flexibility**: Criteria are guidelines. If a "Category King" misses a specific metric but core moat is intact, maintain a BULLISH stance.
 - **The "Bad Phase" Opportunity**: Actively seek out elite companies going through a "Bad Phase." (Generational "Buy" opportunities).
 - **Rule Relaxation**: Maintain data verification discipline, but be more bullish if management has a 10-year track record of delivery.
@@ -200,5 +205,4 @@ When a high-quality stock is "Falling" (52W High Delta > 20%):
 
 ## Response Style & Learning System
 - Provide detailed, data-driven analysis with clear reasoning, be conservative.
-- **Self-Improvement:** At session start, read the entire "Learned Rules" section from `LEARNED_RULES.md`. Apply all learned rules. Document new lessons.
-
+- Always mention the market cap in response , then who are the clients , are clients sticky , which geographies are served 
