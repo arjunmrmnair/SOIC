@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOIC Forensic Alert v4.9: Rajesh Exports Ltd</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #ef4444; /* Alert Red */
+            --brand-dark: #7f1d1d;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-main: #fef2f2;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #fca5a5;
+            --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            
+            /* Highlighting Styles */
+            --hl-yellow: #fef9c3;
+            --hl-green: #d1fae5;
+            --hl-red: #fee2e2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-primary); line-height: 1.6; padding: 20px; }
+
+        .container { max-width: 1300px; margin: 0 auto; }
+
+        /* Interaction Bar */
+        #interaction-status { background: var(--brand-primary); color: white; text-align: center; padding: 8px; font-size: 0.7rem; font-weight: 700; border-radius: 6px; margin-bottom: 15px; display: none; position: sticky; top: 0; z-index: 100; }
+
+        /* Top Bar */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+        .timestamp { background: white; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+
+        /* Concise Verdict Header v4.9 */
+        .verdict-header {
+            background: var(--brand-dark);
+            color: white;
+            padding: 24px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left h1 { font-size: 1.8rem; font-weight: 800; display: inline-block; vertical-align: middle; }
+        .cmp-tag { font-size: 1.3rem; font-weight: 800; color: #fca5a5; margin-left: 12px; vertical-align: middle; }
+        .header-metrics { font-size: 0.8rem; opacity: 0.8; margin: 6px 0; font-weight: 500; }
+        .header-metrics b { color: white; opacity: 1; }
+        
+        .badge-group { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .action-badge { background: var(--danger); color: white; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+        .hold-badge { background: #000; color: white; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+        .moat-badge { background: #4b5563; color: white; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+
+        .header-right { text-align: right; }
+        .cagr-box { margin-bottom: 12px; }
+        .cagr-label { font-size: 0.6rem; font-weight: 800; opacity: 0.7; text-transform: uppercase; display: block; }
+        .cagr-val { font-size: 1.1rem; font-weight: 800; color: #fca5a5; }
+
+        .tranche-roadmap { display: flex; gap: 8px; justify-content: flex-end; }
+        .tranche-item { background: rgba(255,255,255,0.1); padding: 6px 10px; border-radius: 6px; text-align: center; min-width: 90px; border: 1px solid var(--danger); }
+        .tranche-price { font-size: 0.9rem; font-weight: 800; color: #fca5a5; display: block; }
+
+        /* EXHAUSTIVE Moat Section (Broken Moat) */
+        .moat-details {
+            background: white;
+            border: 2px solid var(--brand-dark);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 10px 10px 0px var(--brand-dark);
+        }
+        .moat-summary {
+            padding: 15px 25px;
+            background: #fff1f1;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            color: var(--brand-dark);
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+        .moat-summary:hover { background: #fee2e2; }
+        .moat-content { padding: 25px; border-top: 1px solid var(--border); display: none; }
+        .moat-pillar { margin-bottom: 25px; }
+        .pillar-title { font-size: 0.95rem; font-weight: 800; color: var(--brand-dark); display: block; margin-bottom: 6px; }
+        .mgmt-quote { font-family: 'Inter', sans-serif; font-style: italic; color: var(--text-secondary); display: block; padding-left: 15px; border-left: 4px solid #fca5a5; font-size: 0.9rem; line-height: 1.6; }
+
+        /* Main Grid */
+        .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 30px; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 24px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); margin-bottom: 24px; }
+        .section-title { font-size: 1.1rem; font-weight: 800; color: var(--brand-dark); margin-bottom: 18px; border-bottom: 2px solid #fee2e2; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+
+        /* Concall Styles */
+        .summary-list { list-style: none; font-size: 0.9rem; }
+        .summary-list li { margin-bottom: 15px; border-bottom: 1px solid #fee2e2; padding-bottom: 10px; }
+        .hl-g { background-color: var(--hl-green); padding: 0 2px; border-radius: 2px; }
+        .hl-r { background-color: var(--hl-red); padding: 0 2px; border-radius: 2px; }
+
+        /* Estimates Table */
+        .est-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .est-table th, .est-table td { padding: 10px; border: 1px solid var(--border); text-align: center; }
+        .est-table th { background: #fff1f1; font-weight: 700; color: var(--brand-dark); text-transform: uppercase; font-size: 0.7rem; }
+        .row-head { text-align: left !important; font-weight: 700; background: #fafafa; }
+        .ebitda-row { background: #fee2e2; font-weight: 700; color: var(--danger); }
+
+        /* Mini Stats Box */
+        .mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .mini-card { background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid var(--border); text-align: center; }
+        .mini-label { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .mini-val { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
+
+        /* Valuation Grid */
+        .valuation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .val-card { border: 2px solid var(--brand-dark); padding: 20px; border-radius: 12px; background: white; transition: 0.3s; }
+        .val-card:hover { box-shadow: 10px 10px 0px var(--brand-dark); transform: translate(-5px, -5px); }
+        .val-header { font-size: 1.1rem; font-weight: 800; border-bottom: 2px solid var(--brand-dark); margin-bottom: 15px; padding-bottom: 5px; display: block; }
+        .val-math { font-size: 0.9rem; margin-bottom: 20px; font-weight: 500; }
+        .upside-tag { background: var(--danger); color: white; padding: 4px 10px; border-radius: 4px; font-weight: 800; font-size: 0.8rem; }
+
+        @media (max-width: 1000px) { .main-grid, .valuation-grid, .verdict-header { grid-template-columns: 1fr; } .header-right { text-align: left; margin-top: 20px; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="interaction-status">ITEM SELECTED: <span id="status-text"></span></div>
+
+    <div class="top-bar">
+        <div class="timestamp">FORENSIC ALERT VER: 4.9 | <span id="clock"></span> IST</div>
+        <div style="font-weight: 700; color: var(--brand-dark);">CRITICAL FAILURE AUDIT | RAJESH EXPORTS</div>
+    </div>
+
+    <!-- CONCISE VERDICT HEADER v4.9 -->
+    <header class="verdict-header">
+        <div class="header-left">
+            <h1>Rajesh Exports Ltd</h1>
+            <span class="cmp-tag">₹98.73 (Lower Circuit)</span>
+            <p class="header-metrics">
+                M.Cap: <b>₹2,915 Cr</b> | PE: <b>Unreliable</b> | PEG: <b>N/A</b> (<span style="color: #fca5a5; font-weight: 800;">Overpriced</span>)
+            </p>
+            <div class="badge-group">
+                <span class="action-badge">Verdict: HARD AVOID / EXIT</span>
+                <span class="hold-badge">LIFETIME EXIT: YES</span>
+                <span class="moat-badge">Moat: BROKEN / SHELL SUSPECT</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="cagr-box">
+                <span class="cagr-label">Forensic Revenue Inflation</span>
+                <div class="cagr-val">~99.8% (alleged)</div>
+            </div>
+            <div class="tranche-roadmap">
+                <div class="tranche-item">
+                    <span style="display: block; font-size: 0.6rem; opacity: 0.8;">LIQUIDITY</span>
+                    <b class="tranche-price">ANY PRICE</b>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- EXHAUSTIVE Moat Section (Broken Moat) -->
+    <div class="moat-details">
+        <div class="moat-summary" onclick="toggleMoat()">
+            <span>🛡️ Click to Reveal the "Broken Moat" (Exhaustive Forensic Breakdown)</span>
+            <span id="moat-arrow">▼</span>
+        </div>
+        <div class="moat-content" id="moat-content">
+            <div class="moat-pillar">
+                <b class="pillar-title">1. The "Magic Trick" Money (Ghost Turnover):</b>
+                <span class="mgmt-quote">
+                    Imagine you have a lemonade stand. You tell everyone you sold ₹1,000 worth of lemonade. But when the principal checks your actual cup sales, you only sold 2 cups for ₹2. You just added ₹998 out of thin air to look like the richest kid in school.
+                    <br><br>
+                    <b>Forensic Depth:</b> SEBI alleges a **₹15.15 Lakh Crore** misstatement. Standalone audited revenues of Swiss subsidiary **Valcambi SA** (CY23) was only **₹542 Cr** (Processing Fees), yet Rajesh Exports consolidated ₹2.80 Lakh Cr for the group. This indicates that **99%+ of group revenue is allegedly circular or non-existent**.
+                </span>
+            </div>
+            <div class="moat-pillar">
+                <b class="pillar-title">2. The "African Treasure Map" (Undocumented Mines):</b>
+                <span class="mgmt-quote">
+                    Imagine you tell your friends you own a secret gold island in the middle of the ocean. But you have no photos, no map, and you can't even show where it is. That's why the principal doesn't believe you.
+                    <br><br>
+                    <b>Forensic Depth:</b> SEBI questioned a **₹1,035 Crore** investment in African gold mines. Forensic auditors (BDO India) found **no verifiable proof** of the existence, production, or valuation of these mines. These undocumented assets underpin the company's ₹15,000 Cr+ Book Value, which is likely a **valuation trap**.
+                </span>
+            </div>
+            <div class="moat-pillar">
+                <b class="pillar-title">3. The "Piggy Bank" Diverter (Promoter Integrity):</b>
+                <span class="mgmt-quote">
+                    The teacher gives the class president ₹100 to buy pizza for the whole class. Instead, the president takes the money and uses it to bet on a video game for himself. 
+                    <br><br>
+                    <b>Forensic Depth:</b> SEBI unearthed that **₹339 Crore** of company funds were allegedly routed directly to Chairman Rajesh Mehta’s personal bank accounts for **derivative trading**. Total diverted funds are suspected to be **₹926 Crore**. This is a catastrophic breach of promoter integrity.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="column">
+            <!-- Latest Concall Summary (COLOR-CODED) -->
+            <div class="card">
+                <h2 class="section-title">🎙️ Latest Concall Summary (Crisis Management)</h2>
+                <ul class="summary-list">
+                    <li>
+                        <b>Management Response:</b> <span class="hl-r">Defiant but evasive.</span> CMD Rajesh Mehta has rejected SEBI's ₹15 lakh crore finding as a "communication gap".
+                        <span class="mgmt-quote">"The revenues are correct. SEBI has mistakenly compared our processing fees with gross turnover. We have submitted 400GB of data to clarify."</span>
+                    </li>
+                    <li>
+                        <b>Li-Ion Battery Pivot:</b> <span class="hl-r">Trust in guidance is near zero.</span> Despite having a 5 GWh PLI project, auditors cannot verify fund utilization.
+                        <span class="mgmt-quote">"Our future lies in the Energy segment. We are building India's largest lithium-ion cell factory." (Audit findings suggest funds might have been diverted).</span>
+                    </li>
+                    <li>
+                        <b>Lender Action:</b> <span class="hl-r">Canara Bank has classified ₹509 Cr exposure as "Stressed".</span>
+                        <span class="mgmt-quote">"We are in talks with our bankers to regularize our lines of credit." (Banks are already preparing to auction the debt).</span>
+                    </li>
+                </ul>
+                <div style="background: #fee2e2; padding: 15px; border-radius: 10px; border-left: 4px solid var(--danger); margin-top: 15px;">
+                    <b style="font-size: 0.85rem; color: var(--brand-dark);">OFFICIAL WARNING:</b>
+                    <p style="font-style: italic; font-size: 0.9rem; margin-top: 5px;">"The company is currently under a fresh SEBI-ordered forensic audit. All financial data should be considered **unreliable**."</p>
+                </div>
+            </div>
+
+            <!-- Audit Checklist -->
+            <div class="card">
+                <h2 class="section-title">❌ SOIC Hard Stop Failures</h2>
+                <div class="audit-grid">
+                    <div class="audit-step" style="border-color: var(--danger);"><span style="color: var(--danger); font-weight: 900;">❌</span> Revenue Credibility</div>
+                    <div class="audit-step" style="border-color: var(--danger);"><span style="color: var(--danger); font-weight: 900;">❌</span> Promoter Integrity</div>
+                    <div class="audit-step" style="border-color: var(--danger);"><span style="color: var(--danger); font-weight: 900;">❌</span> CFO/PAT (Fake Cash)</div>
+                    <div class="audit-step" style="border-color: var(--danger);"><span style="color: var(--danger); font-weight: 900;">❌</span> Auditor Non-Cooperation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <!-- Financial Estimates -->
+            <div class="card">
+                <h2 class="section-title">📊 Reported vs. Reality</h2>
+                <table class="est-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Reported (FY25)</th>
+                        <th>Actual (Alleged)</th>
+                    </tr>
+                    <tr>
+                        <td class="row-head">Revenue</td>
+                        <td>₹2.8 Lakh Cr</td>
+                        <td>₹542 Cr?</td>
+                    </tr>
+                    <tr class="ebitda-row">
+                        <td class="row-head">EBITDA Margin %</td>
+                        <td>0.4%</td>
+                        <td>FORENSIC RED</td>
+                    </tr>
+                    <tr>
+                        <td class="row-head">PAT</td>
+                        <td>(Loss) ₹53 Cr</td>
+                        <td>Unverifiable</td>
+                    </tr>
+                </table>
+                
+                <div class="mini-stats">
+                    <div class="mini-card" style="background: #fee2e2;"><span class="mini-label">Price/Book</span><b class="mini-val">0.20x (Trap)</b></div>
+                    <div class="mini-card" style="background: #fee2e2;"><span class="mini-label">Trust Score</span><b class="mini-val">0 / 100</b></div>
+                </div>
+                <div style="margin-top: 15px; font-size: 0.75rem; background: #fef2f2; padding: 10px; border-radius: 8px; color: var(--danger); border: 1px solid var(--border);">
+                    <b>Status:</b> Stock moved to **BZ Series (Trade-to-Trade)**. High insolvency risk.
+                </div>
+            </div>
+
+            <div style="font-size: 0.65rem; color: var(--text-muted); background: #f1f5f9; padding: 10px; border-radius: 8px;">
+                <b>DATA SOURCE:</b> Screener.in (historical metrics) and SEBI Interim Order WTM/ASB/IVD/ID10/31421/2026.
+            </div>
+        </div>
+    </div>
+
+    <!-- PE-CENTRIC VALUATION v4.9 -->
+    <h2 class="section-title" style="margin-bottom: 15px;">💰 Forensic Reality Matrix</h2>
+    <div class="valuation-grid">
+        <div class="val-card">
+            <span class="val-header">Reported Value</span>
+            <div class="val-math">
+                Book Value: ₹15,681 Cr<br>
+                Mkt Cap: ₹2,915 Cr<br><br>
+                <b>Status: Value Trap.</b>
+            </div>
+            <span class="upside-tag" style="background: #000;">STAY AWAY</span>
+        </div>
+
+        <div class="val-card">
+            <span class="val-header">Insolvency Risk</span>
+            <div class="val-math">
+                If 99% of revenue is ghost,<br>
+                debts of ₹500 Cr+ could<br>
+                trigger bankruptcy.
+            </div>
+            <span class="upside-tag">LIQUIDITY CRISIS</span>
+        </div>
+
+        <div class="val-card">
+            <span class="val-header">The "Sniper" Verdict</span>
+            <div class="val-math">
+                There is no recovery.<br>
+                Promoters banned from<br>
+                trading company stock.
+            </div>
+            <span class="upside-tag" style="background: #000;">LIFETIME EXIT</span>
+        </div>
+    </div>
+
+    <footer style="margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.7rem; border-top: 1px solid var(--border); padding-top: 15px;">
+        DISCLAIMER: This is a FORENSIC ALERT. Not a standard audit. Structural failure detected.
+        <br><b>@GeminiCLI | Forensic Audit v4.9 (High-Density)</b>
+    </footer>
+</div>
+
+<script>
+    function toggleMoat() {
+        const content = document.getElementById('moat-content');
+        const arrow = document.getElementById('moat-arrow');
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+            arrow.innerText = '▼';
+        } else {
+            content.style.display = 'block';
+            arrow.innerText = '▲';
+        }
+    }
+
+    function showStatus(text) {
+        const bar = document.getElementById('interaction-status');
+        const span = document.getElementById('status-text');
+        span.innerText = text;
+        bar.style.display = 'block';
+        setTimeout(() => { bar.style.display = 'none'; }, 4000);
+    }
+
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+</body>
+</html>

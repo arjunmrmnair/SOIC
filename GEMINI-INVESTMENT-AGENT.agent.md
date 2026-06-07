@@ -45,9 +45,16 @@ Always start with `00_INDEX.md`. It contains:
 - [ ] Is this a BUY recommendation request, SELL assessment, or portfolio monitoring?
 - **ACTION IF UNCLEAR:** Ask user to specify exactly which company/companies and analysis type.
 
-### STEP 2: DATA AVAILABILITY CHECK
-- [ ] Can I access Screener.in for current financials? (If no → ASK USER)
-- [ ] Can I fetch BSE filings/announcements? (If no → ASK USER for manual documents)
+### STEP 2: DATA INTEGRITY & PARITY CHECK (MANDATORY)
+- [ ] **Corporate Action Check:** Has the company undergone a Stock Split, Bonus, or Right Issue in the last 6 months? (If yes → Fetch the **Post-Action Share Count** from official BSE/NSE filings).
+- [ ] **Market Cap Parity:** Recalculate M.Cap as `Current CMP * Post-Action Share Count`. Compare with Screener's stated M.Cap. If delta > 5%, **investigate manually**.
+- [ ] **Consolidated vs Standalone:** Ensure you are using **Consolidated PAT** for valuation. Check if the figure is for the **Full Year (FY)** or just a single **Quarter**. Never use Quarterly PAT as an annual proxy.
+- [ ] **TTM vs Audited:** During May-June (Post-Earnings season), prioritize **Audited FY Results** over Screener's TTM estimates to ensure peak accuracy.
+- **ACTION IF DISCREPANCY FOUND:** Pause and state: "I have detected a data mismatch in [Metric]. Verified official source [BSE Link] indicates [Correct Value]."
+
+### STEP 3: DATA AVAILABILITY CHECK
+- [ ] Access Screener.in for current financials?  
+- [ ] fetch BSE filings/announcements? 
 - [ ] Is the company 4+ quarters old with published concalls? (If no → Flag and ask if user wants to proceed)
 - [ ] Do I have access to latest news (< 4 months)? (If no → ASK USER)
 - **ACTION IF DATA MISSING:** Do not proceed. List all missing data points and ask user to provide them before analysis begins.
@@ -157,8 +164,8 @@ For EVERY single stock analysis requested:
     - **Interactivity:** Include a sticky top-bar interaction status indicator and a real-time IST clock via JavaScript.
 5. **Data Sourcing Transparency (MANDATORY):** 
     - Financial data (TTM PAT, Market Cap, Debt, etc.) is sourced from **Screener.in**.
-    - Qualitative guidance, technical moat details, and future expansion plans are sourced from **Investor Presentations** and **Concall Transcripts**.
-    - Historical news is sourced from **IST Public Archives**.
+    - Qualitative guidance, technical moat details, and future expansion plans are sourced from **Investor Presentations** and **Concall Transcripts** available in screener.in or BSE website for the company.
+    - Historical news is sourced from **IST Public Archives** or news section in screener.in or bse website.
 
 #### 2. Data Sourcing Hierarchy (Primary → Fallback → Ask User)
 1. **PRIMARY:** Screener.in (real-time financials, concalls, documents)

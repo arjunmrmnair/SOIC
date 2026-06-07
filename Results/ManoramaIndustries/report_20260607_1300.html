@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOIC Master Audit v4.8 - Manorama Industries Ltd</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #38bdf8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 20px;
+        }
+
+        .verdict-header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            display: inline-block;
+        }
+
+        .cmp-badge {
+            font-size: 1.8rem;
+            color: var(--success);
+            margin-left: 15px;
+            font-weight: 700;
+        }
+
+        .stats-row {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        .badges {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-verdict { background: var(--success); color: white; }
+        .badge-hold { background: var(--accent); color: white; }
+        .badge-moat { background: var(--primary); color: #0f172a; }
+
+        .tranche-roadmap {
+            text-align: right;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .tranche-title { color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 5px; }
+        .tranche-value { font-size: 1.2rem; font-weight: 800; }
+
+        /* Moat Section */
+        .moat-toggle {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .moat-header {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .moat-content {
+            padding: 20px;
+            display: none;
+            border-top: 1px solid #334155;
+        }
+
+        .moat-metaphor {
+            font-style: italic;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .moat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #334155;
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Concall Highlights */
+        .hl-g { color: var(--success); font-weight: 600; }
+        .hl-r { color: var(--danger); font-weight: 600; }
+        .mgmt-quote {
+            display: block;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.5);
+            border-left: 4px solid var(--primary);
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th { text-align: left; color: var(--text-dim); font-size: 0.8rem; padding: 10px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 10px; border-bottom: 1px solid #334155; font-size: 0.9rem; }
+
+        .metric-row { font-weight: 700; color: var(--primary); }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .stat-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px; }
+        .stat-value { font-size: 1.1rem; font-weight: 700; }
+
+        /* Valuation Matrix */
+        .valuation-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .val-card {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px dashed #334155;
+            text-align: center;
+        }
+
+        .val-card.highlight { border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
+
+        /* Sticky Bar */
+        .sticky-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 10px 20px;
+            border-bottom: 1px solid #334155;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .ist-clock { font-family: monospace; color: var(--primary); }
+
+        .audit-banner {
+            background: linear-gradient(90deg, #1e40af, #1e3a8a);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pulse {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0px rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(34, 197, 94, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sticky-bar">
+    <div><span class="pulse"></span> System Status: <span style="color:var(--success)">ANALYSIS COMPLETE</span></div>
+    <div class="ist-clock" id="clock">IST: 07-06-2026 12:45:00</div>
+</div>
+
+<div class="container" style="margin-top: 60px;">
+    <div class="header">
+        <div class="verdict-header">
+            <h1>Manorama Industries Ltd <span class="cmp-badge">₹ 1,478</span></h1>
+            <div class="stats-row">
+                M.Cap: ₹ 8,814 Cr | PE: 37.8 | PEG: 0.36 <span style="color:var(--success)">(Deep Value)</span> | Sector: Specialty Chemicals / Fats
+            </div>
+            <div class="badges">
+                <span class="badge badge-verdict">STRONG BUY</span>
+                <span class="badge badge-hold">LIFETIME HOLD</span>
+                <span class="badge badge-moat">GLOBAL CBE MOAT</span>
+            </div>
+        </div>
+        <div class="tranche-roadmap">
+            <div class="tranche-title">SNAIPER ENTRY PLAN</div>
+            <div class="tranche-value">₹ 1,350 - ₹ 1,420</div>
+            <div style="font-size: 0.7rem; color: var(--text-dim); margin-top:5px">50% Now | 50% on 10% Dip</div>
+        </div>
+    </div>
+
+    <div class="audit-banner">
+        <strong>OFFICIAL GUIDANCE:</strong> 
+        <span class="mgmt-quote" style="margin:0; background:none; border:none; padding:0">
+            "We are targeting 25%-30% revenue growth for the next 3 years with EBITDA margins of 25-27%. FY26 target raised to ₹1,300 Cr."
+        </span>
+    </div>
+
+    <div class="moat-toggle">
+        <div class="moat-header" onclick="toggleMoat()">
+            <strong>Click to Reveal Moat Deep Dive (Technical Patents & DMFs)</strong>
+            <span>▼</span>
+        </div>
+        <div class="moat-content" id="moatContent">
+            <div class="moat-metaphor">
+                "Like a chef who owns the only forest where the secret spice grows, and the only machine that can grind it into gold."
+            </div>
+            <div class="moat-grid">
+                <div>
+                    <strong>1. Sourcing Monopoly (Waste to Wealth):</strong>
+                    <p style="font-size: 0.85rem; color: var(--text-dim)">
+                        Proprietary network of 18,000 tribal collection centers across 10+ Indian states. Procurement of Sal and Mango seeds (forest waste) which requires specialized logistics that competitors cannot replicate easily.
+                    </p>
+                </div>
+                <div>
+                    <strong>2. Fractionation Technology:</strong>
+                    <p style="font-size: 0.85rem; color: var(--text-dim)">
+                        One of only 7 global producers capable of producing high-quality Cocoa Butter Equivalents (CBE). Proprietary multi-stage fractionation process creates fats with precise melting points (34-36°C) required by global chocolate giants.
+                    </p>
+                </div>
+            </div>
+            <div style="margin-top: 15px; border-top: 1px solid #334155; padding-top: 15px;">
+                <strong>Client Stickiness:</strong> Ferrero Rocher, The Body Shop, Mondelez, Hershey's. Switching costs are high due to strict quality audits (6-12 months) and custom specifications for each client.
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="left-col">
+            <div class="card">
+                <div class="card-title">Latest Concall Summary (May 2026)</div>
+                <p><span class="hl-g">✓ Revenue growth of 76% YoY</span> driven by expanded fractionation capacity (40k MT).</p>
+                <p><span class="hl-g">✓ CFO turned positive (₹259 Cr)</span>, significantly exceeding PAT, proving earnings quality.</p>
+                <p><span class="hl-g">✓ CBE contribution increased to 30%</span> of total sales, boosting margins.</p>
+                <p><span class="hl-r">⚠ Debt/Equity at 0.51</span> due to aggressive capex for Burkina Faso and Raipur expansion.</p>
+                <p><span class="hl-r">⚠ Potential Equity Dilution</span> from the approved ₹500 Cr QIP for working capital.</p>
+                <div class="mgmt-quote">
+                    "We have achieved a structural shift in our product mix. The global cocoa shortage has made our CBE even more indispensable to the world's largest chocolate makers."
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Financial Estimates (FY25 - FY28)</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>FY25 (A)</th>
+                            <th>FY26 (A)</th>
+                            <th>FY27 (E)</th>
+                            <th>FY28 (E)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Revenue (₹ Cr)</td>
+                            <td>771</td>
+                            <td>1,358</td>
+                            <td>1,765</td>
+                            <td>2,295</td>
+                        </tr>
+                        <tr class="metric-row">
+                            <td>EBITDA Margin %</td>
+                            <td>22.4%</td>
+                            <td>26.2%</td>
+                            <td>27.0%</td>
+                            <td>27.5%</td>
+                        </tr>
+                        <tr>
+                            <td>PAT (₹ Cr)</td>
+                            <td>112</td>
+                            <td>233</td>
+                            <td>310</td>
+                            <td>415</td>
+                        </tr>
+                        <tr>
+                            <td>Growth % (CAGR)</td>
+                            <td>69%</td>
+                            <td>108%</td>
+                            <td>33%</td>
+                            <td>34%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="right-col">
+            <div class="card">
+                <div class="card-title">Mini Stats Cards</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Current PE</div>
+                        <div class="stat-value">37.8</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Forward PE (FY27)</div>
+                        <div class="stat-value">28.4</div>
+                    </div>
+                    <div class="stat-card" style="border-color: var(--success)">
+                        <div class="stat-label">PEG (TTM)</div>
+                        <div class="stat-value">0.36</div>
+                    </div>
+                    <div class="stat-card" style="border-color: var(--success)">
+                        <div class="stat-label">Forward PEG</div>
+                        <div class="stat-value">0.86</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">SOIC Audit Checklist</div>
+                <div style="font-size: 0.85rem">
+                    <p>✓ Quarterly Concalls: YES</p>
+                    <p>✓ M.Cap > 1000Cr: YES</p>
+                    <p>✓ ROCE > 20%: YES (35%)</p>
+                    <p>✓ Debt < 0.25: <span class="hl-r">NO (0.51)</span></p>
+                    <p>✓ Promoter Pledge: 0%</p>
+                    <p>✓ CFO/PAT > 0.5: YES (1.1)</p>
+                    <p>✓ Price Split Check: YES (Mar'24)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-color: var(--accent); background: rgba(139, 92, 246, 0.05);">
+        <div class="card-title" style="color: var(--accent)">Valuation Matrix (PE-CENTRIC Doubling Math)</div>
+        <div class="valuation-matrix">
+            <div class="val-card">
+                <div class="stat-label">FY26 (CURRENT)</div>
+                <div class="stat-value">₹ 1,478</div>
+                <div style="font-size: 0.7rem; color: var(--text-dim)">PAT: ₹ 233 Cr | PE: 37.8x</div>
+            </div>
+            <div class="val-card highlight">
+                <div class="stat-label">FY27 (YEAR +1)</div>
+                <div class="stat-value">₹ 2,050</div>
+                <div style="font-size: 0.7rem; color: var(--text-dim)">PAT: ₹ 310 Cr | PE: 40x</div>
+            </div>
+            <div class="val-card">
+                <div class="stat-label">FY29 (TARGET)</div>
+                <div class="stat-value">₹ 3,600</div>
+                <div style="font-size: 0.7rem; color: var(--text-dim)">2.4x Multiplier (Double in 2.5Y)</div>
+            </div>
+        </div>
+        <div style="margin-top: 20px; font-size: 0.85rem; text-align: center; color: var(--text-dim)">
+            <strong>The Math:</strong> FY29 PAT (₹540 Cr) * 40 PE = ₹21,600 Cr M.Cap. (Current M.Cap: ₹8,814 Cr).
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleMoat() {
+        const content = document.getElementById('moatContent');
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = 'IST: ' + 
+            now.getDate().toString().padStart(2, '0') + '-' + 
+            (now.getMonth()+1).toString().padStart(2, '0') + '-' + 
+            now.getFullYear() + ' ' + 
+            now.getHours().toString().padStart(2, '0') + ':' + 
+            now.getMinutes().toString().padStart(2, '0') + ':' + 
+            now.getSeconds().toString().padStart(2, '0');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+</body>
+</html>
